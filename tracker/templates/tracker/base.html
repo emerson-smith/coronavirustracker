@@ -127,8 +127,8 @@ Updates every 15 minutes<hr>
 <div class="row">
     <div class="col">
         <div class="col-md">
-            <div class="card text-center text-white bg-info mb-3">
-			  	<div class="card-header">
+            <div class="card text-white bg-info mb-3">
+			  	<div class="card-header text-center">
 			  		<h3 class="card-title">Today's Data</h3>
 			  	</div>
 			  	<div class="card-body">
@@ -137,6 +137,8 @@ Updates every 15 minutes<hr>
                     <h5>New Deaths Today: {{ curr_new_deaths }}</h5>
 			    	<h5>Total Cases: {{ curr_cases }}</h5>
 			    	<h5>Total Deaths: {{ curr_deaths }}</h5>
+			    	<h5>Current Case-Fatality Ratio: {{ curr_case_fatality_ratio }}%</h5>
+			    	<h5>Total Test Conducted: {{ curr_tests_total }}</h5>
 			  	</div>
 			</div>
         </div>
@@ -146,11 +148,11 @@ Updates every 15 minutes<hr>
         <div class="col-md">
                         <div class="card text-center text-white bg-info mb-3">
 			  	<div class="card-header">
-			  		<h3 class="card-title">Date Range</h3>
+			  		<h3 class="card-title">Modify Charts</h3>
 			  	</div>
 			  	<div class="card-body">
                 <div class="slidecontainer">
-                    Days of Past Data:
+                    Select number of past days to show:
                     <input type="range" name="daysDisplayNumber" step="1" min="2" max="{{ total_dates }}" value="{{ dates_to_show }}" class="slider" id="displayRange">
                     <p>Show the last: <span id="displayNum"></span> days. Max of {{ total_dates }} total.</p>
                 </div>
@@ -170,15 +172,18 @@ Updates every 15 minutes<hr>
                     <span class="checkmark"></span>
                 </label>
                 <div class="slidecontainer">
-                    Days to project:
+                    Select how many days you'd like to project:
                     <input type="range" name="Number" step="1" min="1" max="50" value="{{ user_num }}" class="slider" id="daysRange">
-                    <p>Value: <span id="daysNum"></span></p>
+                    <p>Days: <span id="daysNum"></span></p>
                 </div>
                 <div class="slidecontainer">
                     Decline in Spread Rate: (as a percentage of previous day's spread rate)
                     <input type="range" name="growthNumber" step=".01" min=".7" max="1.01" value="{{ user_growth_num }}" class="slider" id="spreadRange">
                     <p>Value: <span id="spreadNum"></span></p>
                 </div>
+                <p>Make projections based on the spread rate decreasing at the amount you set as a percentage of
+                    the previous day's spread rate. The point is to visualize what it would look like, not to make
+                 actual projections.</p>
 </div>
 </div>
         </div>
@@ -242,7 +247,7 @@ Updates every 15 minutes<hr>
 
     <div class="col">
 		<div class="col-md">
-
+            <canvas id="testsChart"></canvas>
         </div>
     </div>
 
@@ -288,6 +293,7 @@ slider3.oninput = function() {
 {% include 'tracker/deaths_chart.html' %}
 {% include 'tracker/deaths_daily.html' %}
 {% include 'tracker/case_fatality.html' %}
+{% include 'tracker/tests_chart.html' %}
 
 </body>
 </html>

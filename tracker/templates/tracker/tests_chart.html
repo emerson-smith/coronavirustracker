@@ -1,0 +1,44 @@
+<script>
+    let tttlChart = document.getElementById('testsChart').getContext('2d');
+    let ssslChart = new Chart(tttlChart, {
+        type: 'line',
+        data: {
+            labels:[{% for i in newdata_dates %}
+                        "{{ i }}",
+                    {%  endfor %}],
+            datasets:[{
+                label: 'Positive Tests',
+                data: [
+                    {% for j in tests_positive %}
+                       {{ j }},
+                    {%  endfor %},
+               ],
+                            backgroundColor: 'rgba(240, 115, 115, .4)',
+            borderColor: 'rgba(237, 85, 85, 1)',
+            },{
+                label: 'Negative Tests',
+                data: [
+                    {% for j in tests_negative %}
+                       {{ j }},
+                    {%  endfor %},
+               ],
+                            backgroundColor: 'rgba(113, 245, 113, .4)',
+            borderColor: 'rgba(66, 245, 66, 1)',
+            },{
+                label: 'Total Tests',
+                data: [
+                    {% for j in tests_total %}
+                       {{ j }},
+                    {%  endfor %},
+               ],
+                            backgroundColor: 'rgba(245, 245, 113, .4)',
+            borderColor: 'rgba(191, 177, 67, 1)',
+            },
+
+            ],
+
+        },
+        options: {},
+
+    });
+</script>
