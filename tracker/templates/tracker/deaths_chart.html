@@ -1,0 +1,26 @@
+<script>
+    let ddChart = document.getElementById('deathsChart').getContext('2d');
+    let ffChart = new Chart(ddChart, {
+        type: 'line',
+        data: {
+            labels:[{% for i in newdata_dates %}
+                        "{{ i }}",
+                    {%  endfor %}],
+            datasets:[{
+                label: 'Total Deaths',
+                data: [
+                    {% for j in deaths %}
+                       {{ j }},
+                    {%  endfor %},
+               ],
+                            backgroundColor: 'rgba(240, 115, 115, .4)',
+            borderColor: 'rgba(237, 85, 85, 1)',
+            }
+
+            ],
+
+        },
+        options: {},
+
+    });
+</script>

@@ -1,0 +1,293 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Virus Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
+<style>
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+/* The container */
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+</style>
+
+</head>
+<body>
+<div class="text-center">
+<h1>U.S. Coronavirus Tracker</h1>
+<h5>Made by Emerson Smith</h5>
+Updates every 15 minutes<hr>
+</div>
+{#{% include 'tracker/status.html' %}#}
+
+<form method="POST"> {% csrf_token %}
+<div class="row">
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-center text-white bg-info mb-3">
+			  	<div class="card-header">
+			  		<h3 class="card-title">Today's Data</h3>
+			  	</div>
+			  	<div class="card-body">
+			    	<h5>Date: {{ curr_date }}</h5>
+			    	<h5>New Cases Today: {{ curr_new_cases }}</h5>
+                    <h5>New Deaths Today: {{ curr_new_deaths }}</h5>
+			    	<h5>Total Cases: {{ curr_cases }}</h5>
+			    	<h5>Total Deaths: {{ curr_deaths }}</h5>
+			  	</div>
+			</div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+                        <div class="card text-center text-white bg-info mb-3">
+			  	<div class="card-header">
+			  		<h3 class="card-title">Date Range</h3>
+			  	</div>
+			  	<div class="card-body">
+                <div class="slidecontainer">
+                    Days of Past Data:
+                    <input type="range" name="daysDisplayNumber" step="1" min="2" max="{{ total_dates }}" value="{{ dates_to_show }}" class="slider" id="displayRange">
+                    <p>Show the last: <span id="displayNum"></span> days. Max of {{ total_dates }} total.</p>
+                </div>
+            <input type="submit" class="btn btn-success" value="Update Charts" style="width:100%">
+        </div></div></div>
+    </div>
+
+    <div class="col">
+        <div class="col-md">
+            <div class="card text-white bg-info mb-3">
+			  	<div class="card-header text-center ">
+			  		<h3 class="card-title">Make Projections</h3>
+			  	</div>
+			  	<div class="card-body">
+                <label class="container">Projections Enabled
+                    <input type="checkbox" name="onOffCheckbox" {% if checky %}checked="checked"{% endif %}>
+                    <span class="checkmark"></span>
+                </label>
+                <div class="slidecontainer">
+                    Days to project:
+                    <input type="range" name="Number" step="1" min="1" max="50" value="{{ user_num }}" class="slider" id="daysRange">
+                    <p>Value: <span id="daysNum"></span></p>
+                </div>
+                <div class="slidecontainer">
+                    Decline in Spread Rate: (as a percentage of previous day's spread rate)
+                    <input type="range" name="growthNumber" step=".01" min=".7" max="1.01" value="{{ user_growth_num }}" class="slider" id="spreadRange">
+                    <p>Value: <span id="spreadNum"></span></p>
+                </div>
+</div>
+</div>
+        </div>
+    </div>
+</div>
+</form>
+<hr>
+<div class="row">
+
+    <div class="col">
+		<div class="col-sm">
+            <canvas id="newCasesChart"></canvas>
+        </div>
+    </div>
+
+    <div class="col">
+		<div class="col-sm">
+            <canvas id="casesGrowthRateChart"></canvas>
+        </div>
+    </div>
+
+    <div class="col">
+		<div class="col-sm">
+            <canvas id="casesChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col">
+		<div class="col-md">
+            <canvas id="deathsChart"></canvas>
+        </div>
+    </div>
+
+    <div class="col">
+		<div class="col-md">
+            <canvas id="deathsGrowthRateChart"></canvas>
+        </div>
+    </div>
+
+    <div class="col">
+		<div class="col-md">
+            <canvas id="deathsDailyChart"></canvas>
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="row">
+
+    <div class="col">
+		<div class="col-md">
+            <canvas id="caseFatalityChart"></canvas>
+        </div>
+    </div>
+
+    <div class="col">
+		<div class="col-md">
+
+        </div>
+    </div>
+
+    <div class="col">
+		<div class="col-md">
+
+        </div>
+    </div>
+
+
+
+</div>
+
+<script>
+var slider = document.getElementById("daysRange");
+var output = document.getElementById("daysNum");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+var slider2 = document.getElementById("spreadRange");
+var output2 = document.getElementById("spreadNum");
+output2.innerHTML = slider2.value;
+
+slider2.oninput = function() {
+  output2.innerHTML = this.value;
+}
+
+var slider3 = document.getElementById("displayRange");
+var output3 = document.getElementById("displayNum");
+output3.innerHTML = slider3.value;
+
+slider3.oninput = function() {
+  output3.innerHTML = this.value;
+}
+</script>
+{% include 'tracker/deaths_growth.html' %}
+{% include 'tracker/cases_growth.html' %}
+{% include 'tracker/cases_daily.html' %}
+{% include 'tracker/cases_chart.html' %}
+{% include 'tracker/deaths_chart.html' %}
+{% include 'tracker/deaths_daily.html' %}
+{% include 'tracker/case_fatality.html' %}
+
+</body>
+</html>

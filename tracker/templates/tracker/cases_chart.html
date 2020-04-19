@@ -1,0 +1,50 @@
+<script>
+    let aaChart = document.getElementById('casesChart').getContext('2d');
+    let virusChart = new Chart(aaChart, {
+        type: 'line',
+        data: {
+            labels:[{% for i in newdata_dates %}
+
+                        "{{ i }}",
+
+                    {%  endfor %}
+                {% if not realistic_new_dates == 0 %}
+                    {% for i in realistic_new_dates %}
+                        "{{ i }}",
+                    {%  endfor %}{% endif %}
+            ],
+            datasets:[{
+                label: 'Total Confirmed Cases',
+                data: [
+                    {% for j in newdata_cases %}
+                       {{ j }},
+                    {%  endfor %},
+               ],
+                backgroundColor: 'rgba(250, 246, 145, .4)',
+            borderColor: 'rgba(247, 144, 27, 1)',
+            pointRadius: 0,
+            },
+                    {% if not realistic_new_dates == 0 %}{
+                label: 'Projected Total Cases',
+                data: [
+                    {% for j in cases_projections %}
+                       {{ j }},
+                    {%  endfor %},
+               ],
+
+                backgroundColor: 'rgba(118, 110, 240, .4)',
+            borderColor: 'rgba(76, 65, 240, 1)',
+            pointRadius: 0,
+            },{% endif %}
+
+            ],
+
+        },
+        options: {
+            tooltips: {
+                intersect: false,
+            }
+        },
+
+    });
+</script>

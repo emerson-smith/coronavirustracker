@@ -1,0 +1,34 @@
+<br>
+
+<div class="row">
+    <div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="orders-pending">
+			  	<div class="card-header">
+			  		<h2 class="card-title">Confirmed Cases</h2>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">Total Cases: {{ curr_cases }}</h3>
+			    	<h5 class="card-title">New Cases: {{ curr_new_cases }}</h5>
+			    	<h5 class="card-title">Growth Rate: {{ curr_cases_growth_rate }}</h5>
+			  	</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="orders-pending">
+			  	<div class="card-header">
+			  		<h1 class="card-title">Deaths</h1>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">Total Deaths: {{ curr_deaths }}</h3>
+			    	<h5 class="card-title">New Deaths: {{ curr_new_deaths }}</h5>
+			    	<h5 class="card-title">Growth Rate: {{ curr_deaths_growth_rate }}</h5>
+			  	</div>
+			</div>
+		</div>
+	</div>
+
+</div>

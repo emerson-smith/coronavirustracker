@@ -1,0 +1,29 @@
+<script>
+    let eeChart = document.getElementById('deathsGrowthRateChart').getContext('2d');
+    let ggChart = new Chart(eeChart, {
+        type: 'bar',
+        data: {
+            labels:[{% for i in newdata_dates %}
+                        "{{ i }}",
+                    {%  endfor %}],
+            datasets:[{
+                label: '% Change in Deaths Per Day',
+                data: [
+                    {% for j in change_new_deaths %}
+                       {{ j }},
+                    {%  endfor %},
+               ],
+            borderWidth: 3,
+                                        backgroundColor: 'rgba(240, 115, 115, .4)',
+            borderColor: 'rgba(237, 85, 85, 1)',
+            }
+
+            ],
+
+        },
+        options: {
+
+        },
+
+    });
+</script>

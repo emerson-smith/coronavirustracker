@@ -1,0 +1,43 @@
+<script>
+    let yyyChart = document.getElementById('caseFatalityChart').getContext('2d');
+    let oooChart = new Chart(yyyChart, {
+        type: 'line',
+        data: {
+            labels:[{% for i in newdata_dates %}
+                        "{{ i }}",
+                    {%  endfor %}],
+            datasets:[{
+                label: 'Case Fatality Ratio %',
+                data: [
+                    {% for j in case_fatality_ratio %}
+                       {{ j }},
+                    {%  endfor %},
+               ],
+                                        backgroundColor: 'rgba(240, 115, 115, .4)',
+            borderColor: 'rgba(237, 85, 85, 1)',
+
+            }
+
+            ],
+
+        },
+        options: {
+            scales: {
+
+            yAxes: [{
+            ticks: {
+
+
+                   callback: function(value){return value+ "%"}
+                },
+								scaleLabel: {
+                   display: true,
+                   labelString: "Percentage"
+                }
+            }]
+        }
+
+        },
+
+    });
+</script>
