@@ -117,17 +117,16 @@
 </head>
 <body>
 <div class="text-center">
-<h1>U.S. Coronavirus Tracker</h1>
+<h1>U.S. COVID-19 Tracker</h1>
 <h5>Made by Emerson Smith</h5>
 Updates every 15 minutes<hr>
 </div>
-{#{% include 'tracker/status.html' %}#}
 
 <form method="POST"> {% csrf_token %}
 <div class="row">
     <div class="col">
         <div class="col-md">
-            <div class="card text-white bg-info mb-3">
+            <div class="card bg-white mb-3">
 			  	<div class="card-header text-center">
 			  		<h3 class="card-title">Today's Data</h3>
 			  	</div>
@@ -146,7 +145,7 @@ Updates every 15 minutes<hr>
 
     <div class="col">
         <div class="col-md">
-                        <div class="card text-center text-white bg-info mb-3">
+                        <div class="card text-center bg-white mb-3">
 			  	<div class="card-header">
 			  		<h3 class="card-title">Modify Charts</h3>
 			  	</div>
@@ -162,7 +161,7 @@ Updates every 15 minutes<hr>
 
     <div class="col">
         <div class="col-md">
-            <div class="card text-white bg-info mb-3">
+            <div class="card bg-white mb-3">
 			  	<div class="card-header text-center ">
 			  		<h3 class="card-title">Make Projections</h3>
 			  	</div>
@@ -195,18 +194,21 @@ Updates every 15 minutes<hr>
 
     <div class="col">
 		<div class="col-sm">
+            <br/><h5 class="text-center">Daily New Cases</h5><p class="text-center">The amount of new confirmed cases each day.</p><hr>
             <canvas id="newCasesChart"></canvas>
         </div>
     </div>
 
     <div class="col">
 		<div class="col-sm">
+            <br/><h5 class="text-center">Spread Rate</h5><p class="text-center">How fast the COVID-19 is spreading. (New Cases / Total Cases + 1)</p><hr>
             <canvas id="casesGrowthRateChart"></canvas>
         </div>
     </div>
 
     <div class="col">
 		<div class="col-sm">
+            <br/><h5 class="text-center">Total Confirmed Cases</h5><p class="text-center">Confirmed cases of COVID-19 in the US over time.</p><hr>
             <canvas id="casesChart"></canvas>
         </div>
     </div>
@@ -217,18 +219,21 @@ Updates every 15 minutes<hr>
 
     <div class="col">
 		<div class="col-md">
+            <br/><h5 class="text-center">Total Confirmed Deaths</h5><p class="text-center">Confirmed deaths of COVID-19 in the US over time.</p><hr>
             <canvas id="deathsChart"></canvas>
         </div>
     </div>
 
     <div class="col">
 		<div class="col-md">
+            <br/><h5 class="text-center">Change in Deaths</h5><p class="text-center">A day's new deaths / the previous days deaths.</p><hr>
             <canvas id="deathsGrowthRateChart"></canvas>
         </div>
     </div>
 
     <div class="col">
 		<div class="col-md">
+            <br/><h5 class="text-center">Deaths Per Day</h5><p class="text-center">Deaths from COVID-19 each day.</p><hr>
             <canvas id="deathsDailyChart"></canvas>
         </div>
     </div>
@@ -241,23 +246,17 @@ Updates every 15 minutes<hr>
 
     <div class="col">
 		<div class="col-md">
+            <br/><h5 class="text-center">Case Fatality Ratio</h5><p class="text-center">Shows deaths as a percentage of cases.</p><hr>
             <canvas id="caseFatalityChart"></canvas>
         </div>
     </div>
 
     <div class="col">
 		<div class="col-md">
+            <br/><h5 class="text-center">Tests Conducted</h5><p class="text-center">Shows tests in the US.</p><hr>
             <canvas id="testsChart"></canvas>
         </div>
     </div>
-
-    <div class="col">
-		<div class="col-md">
-
-        </div>
-    </div>
-
-
 
 </div>
 
