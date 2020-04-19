@@ -167,10 +167,11 @@ Updates every 15 minutes<hr>
 			  		<h3 class="card-title">Make Projections</h3>
 			  	</div>
 			  	<div class="card-body">
-                <label class="container">Projections Enabled (click "Update Charts" after this is enabled)
+                <label class="container">Projections Enabled
                     <input type="checkbox" name="onOffCheckbox" {% if checky %}checked="checked"{% endif %}>
                     <span class="checkmark"></span>
                 </label>
+		<p>(click "Update Charts" after this is enabled)</p>
                 <div class="slidecontainer">
                     Select how many days you'd like to project:
                     <input type="range" name="Number" step="1" min="1" max="50" value="{{ user_num }}" class="slider" id="daysRange">
