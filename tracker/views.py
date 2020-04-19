@@ -22,8 +22,13 @@ def home(request):
     newdata_deaths = data[2][-dates_to_show:]
     newdata_new_deaths = data[7][-dates_to_show:]
     newdata_deaths_change = data[9][-dates_to_show:]
-    curr_new_cases = data[4] - data[1][-1]
-    curr_new_deaths = data[5] - data[2][-1]
+    curr_new_cases = "{:,}".format(data[4] - data[1][-1])
+    curr_new_deaths = "{:,}".format(data[5] - data[2][-1])
+    tests_positive = data[11][-dates_to_show:]
+    tests_negative = data[12][-dates_to_show:]
+    tests_total = data[13][-dates_to_show:]
+    curr_case_fatality_ratio = round(data[10][-1], 2)
+    curr_tests_total = "{:,}".format(data[13][-1])
 
     if request.method == "POST":
         dates_to_show = int(request.POST.get('daysDisplayNumber'))
@@ -34,6 +39,9 @@ def home(request):
         newdata_deaths = data[2][-dates_to_show:]
         newdata_new_deaths = data[7][-dates_to_show:]
         newdata_deaths_change = data[9][-dates_to_show:]
+        tests_positive = data[11][-dates_to_show:]
+        tests_negative = data[12][-dates_to_show:]
+        tests_total = data[13][-dates_to_show:]
 
         checky = request.POST.get('onOffCheckbox')
         if checky:
@@ -57,8 +65,8 @@ def home(request):
         'cases_growth_rate': data[8],
         'change_new_deaths': newdata_deaths_change,
         'curr_date': data[3],
-        'curr_cases': data[4],
-        'curr_deaths': data[5],
+        'curr_cases': "{:,}".format(data[4]),
+        'curr_deaths': "{:,}".format(data[5]),
         'curr_new_cases': curr_new_cases,
         'curr_new_deaths': curr_new_deaths,
         'curr_cases_growth_rate': data[8][-1],
@@ -76,5 +84,10 @@ def home(request):
         'total_dates': total_dates,
         'dates_to_show': dates_to_show,
         'case_fatality_ratio': data[10],
+        'tests_positive': tests_positive,
+        'tests_negative': tests_negative,
+        'tests_total': tests_total,
+        'curr_case_fatality_ratio': curr_case_fatality_ratio,
+        'curr_tests_total': curr_tests_total,
                }
     return render(request, 'tracker/base.html', context)

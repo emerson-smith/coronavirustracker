@@ -100,8 +100,33 @@ def pull_data():
     for i in range(len(dates)):
         case_fatality_ratio.append(round((deaths[i]/cases[i]*100), 4))
 
+    # TODO: pull positive tests, negative tests, total tests
+    tests_positive = []
+    tests_negative = []
+    tests_total = []
+    tests_dates = []
+    for i in range(len(tests_data)):
+        # print(tests_data[i])
+        month = str(int((tests_data[i]['date'] % 1000 - tests_data[i]['date'] % 100)/100))
+        day = str(int(tests_data[i]['date'] % 100))
+        full = month + "/" + day
+        tests_dates.insert(0, full)
+        tests_positive.insert(0, tests_data[i]['positive'])
+        if i >= len(tests_data)-4:
+            tests_negative.insert(0, 0)
+        else:
+            tests_negative.insert(0, tests_data[i]['negative'])
+        tests_total.insert(0, tests_data[i]['totalTestResults'])
+
+    x = tests_dates.index('3/1')
+    tests_dates = tests_dates[x:]
+    tests_positive = tests_positive[x:]
+    tests_negative = tests_negative[x:]
+    tests_total = tests_total[x:]
+
     print("ran pulled_data")
-    return dates, cases, deaths, curr_date, curr_cases, curr_deaths, new_cases, new_deaths, cases_growth_rate, change_new_deaths, case_fatality_ratio
+    return dates, cases, deaths, curr_date, curr_cases, curr_deaths, new_cases, new_deaths, cases_growth_rate,\
+           change_new_deaths, case_fatality_ratio, tests_positive, tests_negative, tests_total
 
 
 # dates pull_data()[0]
@@ -115,6 +140,9 @@ def pull_data():
 # cases_growth_rate pull_data()[8]
 # change_new_deaths pull_data()[9]
 # case_fatality_ratio pull_data()[10]
+# tests_positive pull_data()[11]
+# tests_negative pull_data()[12]
+# tests_total pull_data()[13]
 
 
 def make_projections(num, num2, num3):
