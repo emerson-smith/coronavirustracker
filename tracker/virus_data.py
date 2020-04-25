@@ -22,12 +22,21 @@ def download_data():
 
     try:
         wget.download(url_json, dir_folder + "\\data.json")
-        wget.download(tests_url_json, dir_folder + "\\tests_data.json")
+
         now = datetime.now()
         current_time = now.strftime("%H:%M")
         print("downloaded at:", current_time)
     except:
         print("unable to download")
+
+    try:
+        wget.download(tests_url_json, dir_folder + "\\tests_data.json")
+        now = datetime.now()
+        current_time = now.strftime("%H:%M")
+        print("downloaded tests data at:", current_time)
+    except:
+        print("unable to download tests data")
+
     threading.Timer(900.0, download_data).start()
 
 
@@ -50,6 +59,7 @@ def pull_data():
         cases.append(cases_data)
         deaths_data = data['ts'][i]['totalDeaths']
         deaths.append(deaths_data)
+
     now = datetime.now()
     curr_date = now.strftime("%m/%d")
     curr_cases = data["totalConfirmed"]
@@ -105,17 +115,21 @@ def pull_data():
     tests_negative = []
     tests_total = []
     tests_dates = []
-    for i in range(len(tests_data)):
+    for i in range(len(tests_data)-36):
         # print(tests_data[i])
         month = str(int((tests_data[i]['date'] % 1000 - tests_data[i]['date'] % 100)/100))
         day = str(int(tests_data[i]['date'] % 100))
         full = month + "/" + day
         tests_dates.insert(0, full)
         tests_positive.insert(0, tests_data[i]['positive'])
-        if i >= len(tests_data)-4:
-            tests_negative.insert(0, 0)
-        else:
-            tests_negative.insert(0, tests_data[i]['negative'])
+        # if i >= len(tests_data)-4:
+        #     tests_negative.insert(0, 0)
+        # else:
+        #     try:
+        #         # tests_negative.insert(0, tests_data[i]['negative'])
+        #     except:
+        #         print("error at " + str(i))
+        #         pass
         tests_total.insert(0, tests_data[i]['totalTestResults'])
 
     x = tests_dates.index('3/1')
