@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 dir_folder = os.path.join(BASE_DIR, 'tracker')
 url = r"https://infection2020.com/"
 url_json = r"https://infection2020.netlify.com/z.json"
-tests_url_json = r"https://covidtracking.com/api/us/daily.json"
+tests_url_json = r"https://covidtracking.com/api/v1/us/daily.json"
 
 
 # TODO: save json file every 15 min
@@ -122,14 +122,14 @@ def pull_data():
         full = month + "/" + day
         tests_dates.insert(0, full)
         tests_positive.insert(0, tests_data[i]['positive'])
-        # if i >= len(tests_data)-4:
-        #     tests_negative.insert(0, 0)
-        # else:
-        #     try:
-        #         # tests_negative.insert(0, tests_data[i]['negative'])
-        #     except:
-        #         print("error at " + str(i))
-        #         pass
+        if i >= len(tests_data)-4:
+            tests_negative.insert(0, 0)
+        else:
+            try:
+                tests_negative.insert(0, tests_data[i]['negative'])
+            except:
+                print("error at " + str(i))
+                pass
         tests_total.insert(0, tests_data[i]['totalTestResults'])
 
     x = tests_dates.index('3/1')
